@@ -2,69 +2,139 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ChatRoom</title>
-    <script language="JavaScript" type="text/javascript">
+    <title>agu-talk</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-        var websocket;
-        var content;
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 
-        function init() {
-            content = document.getElementById("content");
-            initConnect();
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            margin-top: 5px;
         }
 
-        document.onkeydown = function(e){
-            if(e.keyCode == 13) {
-                send();
-            }
+        .send-div {
+            width: 100%;
         }
 
-        function initConnect() {
-            var wsUri = "ws://119.3.104.56:7777/ws/chatroom";
-            if ('WebSocket' in window) {
-                websocket = new WebSocket(wsUri);
-            } else if ('MozWebSocket' in window) {
-                websocket = new MozWebSocket(wsUri);
-            } else {
-                alert('WebSocket is not supported by this browser.');
-                return;
-            }
-
-            websocket.onopen = function (evt) {
-                //writeToContent("You have join the ChatRoom！")
-            };
-            websocket.onmessage = function (evt) {
-                writeToContent(evt.data);
-            };
-            websocket.onerror = function (evt) {
-                writeToContent('<span style="color: red;">ERROR:</span> ' + evt.data);
-            };
+        .send-text {
         }
 
-        function writeToContent(message) {
-            var pre = document.createElement("p");
-            pre.style.wordWrap = "break-word";
-            pre.innerHTML = message;
-            content.appendChild(pre);
+        .text-div {
+            padding-left: 0px;
+            padding-right: 0px;
         }
 
-        function send() {
-            websocket.send(msg.value);
-            document.getElementById("msg").value = "";
+        .btn-div {
+            padding-left: 0px;
+            padding-right: 0px;
+            text-align: right;
         }
+    </style>
 
-        window.addEventListener("load", init, false);
-    </script>
 </head>
 <body>
-<h3>欢迎使用本系统！！！</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">当前登录用户</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">你好，${sessionScope.username}</a>
+                        <a href="logout" class="list-group-item">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" id="talktitle"></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="well" id="log-container" style="height:400px;overflow-y:scroll">
 
-<div id="content" style="border: 1px solid black; width: 300px; height: 400px; float: left;"></div>
-<div id="userList" style="border: 1px solid black; width: 100px; height: 400px; float: left;"></div>
-
-<div style="clear: both">
-    <input id="msg"/>
-    <button onclick="send();">send</button>
+                    </div>
+                    <div class="send-div">
+                        <div class="col-md-10 text-div">
+                            <input type="text" id="msg" class="form-control send-text"/>
+                        </div>
+                        <div class="col-md-2 btn-div">
+                            <button id="send" type="button" onclick="send()" class="btn btn-primary send-btn">发送
+                            </button>
+                            <button id="clear" type="button" onclick="clear()" class="btn btn-primary send-clear">清除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script language="JavaScript" type="text/javascript">
+
+    var websocket;
+    var content;
+
+    function init() {
+        content = document.getElementById("content");
+        initConnect();
+    }
+
+    document.onkeydown = function (e) {
+        if (e.keyCode == 13) {
+            send();
+        }
+    }
+
+    function initConnect() {
+        var wsUri = "ws://119.3.104.56:7777/ws/chatroom";
+        if ('WebSocket' in window) {
+            websocket = new WebSocket(wsUri);
+        } else if ('MozWebSocket' in window) {
+            websocket = new MozWebSocket(wsUri);
+        } else {
+            alert('WebSocket is not supported by this browser.');
+            return;
+        }
+
+        websocket.onopen = function (evt) {
+            //writeToContent("You have join the ChatRoom！")
+        };
+        websocket.onmessage = function (evt) {
+            $("#log-container").append("<div class='bg-info'><label class='text-danger'>" + evt.data + "</label><div class='text-success'>" + evt.data + "</div></div><br>");
+            scrollToBottom();
+        };
+        websocket.onerror = function (evt) {
+            writeToContent('<span style="color: red;">ERROR:</span> ' + evt.data);
+        };
+    }
+
+    function send() {
+        websocket.send(msg.value);
+        $("#msg").val("");
+    }
+
+    // 滚动条滚动到最低部
+    function scrollToBottom() {
+        var div = document.getElementById('log-container');
+        div.scrollTop = div.scrollHeight;
+    }
+
+    function clear() {
+        console.log("1213131");
+        $("#log-container").empty();
+    }
+
+    window.addEventListener("load", init, false);
+</script>
 </body>
 </html>
