@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LifeCycle</title>
+    <script language="javascript" type="text/javascript">
+        var webSocket;
+        function init() {
+            output = document.getElementById("output");
+            traffic_light_display = document.getElementById("traffic_light_display");
+            update_display("1", "No connection");
+            update_buttons();
+        }
+
+        function open_connection() {
+            //webSocket = new WebSocket("ws://119.3.104.56:7777/ws/lifecycle");
+            webSocket = new WebSocket("ws://119.3.104.56:7777/ws/programmaticLifeCycle");
+            webSocket.onmessage = function (evt) {
+                update_for_message(evt.data);
+                update_buttons();
+            };
+            webSocket.onclose = function (evt) {
+                update_buttons();
+            };
+        }
+
+        function update_display(light_index, display_message) {
+            var pre = document.createElement("pre");
+            pre.style.wordWrap = "break-word";
+            pre.innerHTML = "<b><font face='Arial'>" + display_message + "</font></b>";
+            if (traffic_light_display.firstChild != null) {
+                traffic_light_display.replaceChild(pre, traffic_light_display.firstChild);
+            } else {
+                traffic_light_display.appendChild(pre);
+            }
+            var context = document.getElementById('myDrawing').getContext('2d');
+            context.beginPath();
+            context.fillStyle = "black";
+            context.fillRect(65, 0, 70, 210);
+            context.fill();
+
+            context.beginPath();
+            context.fillStyle = get_color(1, light_index);
+            context.arc(100, 35, 25, 0, (2 * Math.PI), false);
+            context.fill();
+
+            context.beginPath();
+            context.fillStyle = get_color(2, light_index);
+            context.arc(100, 105, 25, 0, (2 * Math.PI), false);
+            context.fill();
+
+            context.beginPath();
+            context.fillStyle = get_color(3, light_index);
+            context.arc(100, 175, 25, 0, (2 * Math.PI), false);
+            context.fill();
+        }
+
+        function get_color(light_index, light_on_index) {
+            if (light_index == 1 && light_on_index == 1) {
+                return "red";
+            } else if (light_index == 2 && light_on_index == 2) {
+                return "yellow";
+            } else if (light_index == 3 && light_on_index == 3) {
+                return "green";
+            } else {
+                return "grey";
+            }
+        }
+
+        function get_light_index(message) {
+            return message.substring(0, 1);
+        }
+
+        function get_display_message(message) {
+            return message.substring(2, message.length);
+        }
+
+        function update_for_message(message) {
+            var display_message = get_display_message(message);
+            var light_index = get_light_index(message);
+            update_display(light_index, display_message);
+        }
+
+        function update_buttons() {
+            ocID.disabled = isOpen();
+            simID.disabled = !isOpen();
+            svmID.disabled = !isOpen();
+            rccID.disabled = !isOpen();
+            rcID.disabled = !isOpen();
+        }
+
+        function isOpen() {
+            return webSocket != null && webSocket.readyState == webSocket.OPEN;
+        }
+
+        function send_valid_message() {
+            webSocket.send("Hello")
+        }
+
+        function send_invalid_message() {
+            webSocket.send("Helxxxlo")
+
+        }
+
+        function request_close_connection() {
+            webSocket.send("close");
+        }
+
+        function close_connection() {
+            webSocket.close();
+            update_display("1", "Client closed connection");
+        }
+
+        window.addEventListener("load", init, false);
+    </script>
+</head>
+<body>
+<h1 style="text-align: center;">Lifecycle Lights</h1>
+
+<table style="text-align: left; width: 50px; margin-left: auto;
+        margin-right: auto;" border="0" cellpadding="20" cellspacing="0">
+    <tbody>
+    <tr>
+        <td style=" text-align: center; vertical-align: top;">
+            <div style="text-align: center;">
+                <form action="">
+                    <input onclick="open_connection()" value="Open Connection" type="button" id="ocID">
+                    <input onclick="send_valid_message()" value="Send Message" type="button" id="svmID">
+                    <input onclick="send_invalid_message()" value="Send Bad Message" type="button" id="simID">
+                    <input onclick="request_close_connection()" value="Server Close Connection" type="button"
+                           id="rccID">
+                    <input onclick="close_connection()" value="Client Close Connection" type="button" id="rcID">
+                </form>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style=" text-align: center; vertical-align: top;">
+            <canvas id="myDrawing" width="200" height="210"></canvas>
+            <div id="traffic_light_display"></div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div id="output"></div>
+</body>
+</html>

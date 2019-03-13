@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatRoom</title>
+    <script language="JavaScript" type="text/javascript">
+
+        var websocket;
+        var content;
+
+        function init() {
+            content = document.getElementById("content");
+            initConnect();
+        }
+
+        document.onkeydown = function(e){
+            if(e.keyCode == 13) {
+                send();
+            }
+        }
+
+        function initConnect() {
+            var wsUri = "ws://119.3.104.56:7777/ws/chatroom";
+            if ('WebSocket' in window) {
+                websocket = new WebSocket(wsUri);
+            } else if ('MozWebSocket' in window) {
+                websocket = new MozWebSocket(wsUri);
+            } else {
+                alert('WebSocket is not supported by this browser.');
+                return;
+            }
+
+            websocket.onopen = function (evt) {
+                //writeToContent("You have join the ChatRoom！")
+            };
+            websocket.onmessage = function (evt) {
+                writeToContent(evt.data);
+            };
+            websocket.onerror = function (evt) {
+                writeToContent('<span style="color: red;">ERROR:</span> ' + evt.data);
+            };
+        }
+
+        function writeToContent(message) {
+            var pre = document.createElement("p");
+            pre.style.wordWrap = "break-word";
+            pre.innerHTML = message;
+            content.appendChild(pre);
+        }
+
+        function send() {
+            websocket.send(msg.value);
+            document.getElementById("msg").value = "";
+        }
+
+        window.addEventListener("load", init, false);
+    </script>
+</head>
+<body>
+<h3>欢迎使用本系统！！！</h3>
+
+<div id="content" style="border: 1px solid black; width: 300px; height: 400px; float: left;"></div>
+<div id="userList" style="border: 1px solid black; width: 100px; height: 400px; float: left;"></div>
+
+<div style="clear: both">
+    <input id="msg"/>
+    <button onclick="send();">send</button>
+</div>
+</body>
+</html>
