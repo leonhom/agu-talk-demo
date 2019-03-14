@@ -112,6 +112,8 @@
         websocket.onmessage = function (evt) {
             $("#log-container").append("<div class='bg-info'><label class='text-danger'>" + evt.data + "</label><div class='text-success'>" + evt.data + "</div></div><br>");
             scrollToBottom();
+            newMsg = true;
+            setTitle1();
         };
         websocket.onerror = function (evt) {
             writeToContent('<span style="color: red;">ERROR:</span> ' + evt.data);
@@ -135,6 +137,35 @@
     }
 
     window.addEventListener("load", init, false);
+
+
+    /**收到消息提示*/
+    let newMsg = false;
+    let window_focused = true;
+
+    function setTitle1(){
+        if(newMsg === true && window_focused === false){
+            document.title = "【新消息】";
+            setTimeout(setTitle2,100);
+        }
+    }
+
+    function setTitle2(){
+        document.title = "";
+        setTimeout(setTitle1,100);
+    }
+
+
+    $(window).focus(function (e) {
+        window_focused = true;
+        setTitle2();
+    });
+
+
+    $(window).blur(function (e) {
+        window_focused = false;
+    });
+
 </script>
 </body>
 </html>
