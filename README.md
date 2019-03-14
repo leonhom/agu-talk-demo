@@ -1,2 +1,9 @@
-# agu-talk-demo
-简单的web im 小工具；上班摸鱼交流时写的，方便在公司不方便的时候聊天用；😝😝😝
+# Getting Started
+
+### Guides
+The following guides illustrate how to use some features concretely:
+
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+
