@@ -3,3 +3,7 @@ server:
 spring:
   application:
     name: agu-talk
+
+  mvc:
+    favicon:
+      enabled: false
