@@ -1,5 +1,6 @@
 package com.agu.talk.ws;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -32,18 +33,13 @@ public class WebSocketServer {
      */
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println(session);
+        System.out.println(session.getId());
         this.session = session;
         //加入set中
         webSocketSet.add(this);
         //在线数加1
         addOnlineCount();
         System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
-        try {
-            sendMessage("连接成功");
-        } catch (IOException e) {
-            System.out.println("IO异常");
-        }
     }
 
     /**
@@ -65,6 +61,7 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
+
         System.out.println("来自客户端的消息:" + message);
 
         // 回发消息
