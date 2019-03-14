@@ -1,14 +1,10 @@
-package com.agu.talk.websocket;
+package com.agu.talk.ws;
 
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -18,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @version 1.0.0
  * @date 2019/3/14 1:50 PM
  */
-@ServerEndpoint("/websocket")
+@ServerEndpoint("/ws")
 @Component
 public class WebSocketServer {
 
