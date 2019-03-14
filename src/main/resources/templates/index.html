@@ -74,43 +74,46 @@
 
 </head>
 <body>
-<div class="container center">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">当前登录用户</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
+<div class="center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">当前登录用户</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="talktitle">摸鱼池塘群聊🐱🐟</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="well" id="log-container" style="height:400px;overflow-y:scroll">
+            <div class="col-md-9">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="talktitle">摸鱼池塘群聊🐱🐟</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="well" id="log-container" style="height:400px;overflow-y:scroll">
 
-                    </div>
-                    <div class="username-div">
+                        </div>
                         <div class="username-div">
-                            <input type="text" id="username" class="form-control username-text" placeholder="请输入昵称">
+                            <div class="username-div">
+                                <input type="text" id="username" class="form-control username-text" placeholder="请输入昵称">
+                            </div>
                         </div>
-                    </div>
-                    <div class="send-div">
-                        <div class="col-md-10 text-div">
-                            <input type="text" id="msg" class="form-control send-text"/>
-                        </div>
-                        <div class="col-md-2 btn-div">
-                            <button id="send" type="button" onclick="send()" class="btn btn-primary send-btn">发送
-                            </button>
-                            <button id="clear" type="button" onclick="clearChart()" class="btn btn-primary send-clear">
-                                清除
-                            </button>
+                        <div class="send-div">
+                            <div class="col-md-10 text-div">
+                                <input type="text" id="msg" class="form-control send-text"/>
+                            </div>
+                            <div class="col-md-2 btn-div">
+                                <button id="send" type="button" onclick="send()" class="btn btn-primary send-btn">发送
+                                </button>
+                                <button id="clear" type="button" onclick="clearChart()"
+                                        class="btn btn-primary send-clear">
+                                    清除
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
