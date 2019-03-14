@@ -144,8 +144,7 @@
                 $("#log-container").append("<div><label class='text-danger'  style='text-align: right;width: 100%;'>" + jsonObject.dateTime + " " + jsonObject.username + "<br/>" + jsonObject.msg + "</label></div><br>");
             } else {
                 // 别人发送的消息
-                $("#log-container").append("<div class='text-success' style='width: 100%;'>" + jsonObject.dateTime + " " + jsonObject.username + "：" +
-                    jsonObject.msg + "</div><br>");
+                $("#log-container").append("<div class='text-success' style='width: 100%;'>" + jsonObject.dateTime + " " + jsonObject.username + "<br/>" + jsonObject.msg + "</div><br>");
             }
 
             // $("#log-container").append("<div class='bg-info'><label class='text-danger'>" + evt.data + "</label><div class='text-success'>" + evt.data + "</div></div><br>");
