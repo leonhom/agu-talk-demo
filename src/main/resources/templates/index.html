@@ -146,7 +146,7 @@
 
                             </div>
                             <div class="col-md-10 text-div">
-                                <div onclick="showEmoji()" class="emoji">😁</div><input type="text" id="msg" class="form-control1 send-text"/>
+                                <div onclick="showEmoji()" class="emoji">😁</div><textarea  id="msg" class="form-control1 send-text" rows="3" cols="20"></textarea>
                             </div>
                             <div class="col-md-2 btn-div">
                                 <button id="send" type="button" onclick="send()" class="btn btn-primary send-btn">发送
@@ -339,9 +339,9 @@
             var emo = emos[j];
             var data = 'data:image/png;base64,' + emo[2];
             if (j % 20 == 0) {
-                html += '<li ></br>';
+                html += '<li onclick="checkEmoji(\''+ data +'\',\''+ emo[1] +'\')"></br>';
             } else {
-                html += '<li>';
+                html += '<li onclick="checkEmoji(\''+ data +'\',\''+ emo[1] +'\')">';
             }
             html += '<img style="display: inline;vertical-align: middle;" src="' + data + '"  unicode16="' + emo[1] + '" /></li>';
         }
@@ -349,8 +349,29 @@
         $("#emoji").append(html);
     }
 
+
+    var isShow = false;
+    /**
+     * 展示
+     */
     function showEmoji() {
-        $("#emoji").show();
+        if(isShow){
+            $("#emoji").hide();
+            isShow = false;
+        }else{
+            $("#emoji").show();
+            isShow = true;
+        }
+    }
+
+    function checkEmoji(data,emo) {
+        //$("#msg").attr("value").append('<img style="display: inline;vertical-align: middle;" src="' + data + '"  unicode16="' + emo + '" />');
+        //document.getElementById("log-container").append("");
+        var img = "<img style='display: inline;vertical-align: middle'; src=" + data + "  unicode16=" + emo + " />";
+        var dateTime = getDataNow();
+        var str = "{\"username\":\"" + username.value + "\",\"userid\":\"" + userId + "\",\"msg\":\"" + img + "\",\"dateTime\":\"" + dateTime + "\"}";
+        websocket.send(str);
+        showEmoji();
     }
 </script>
 </body>
