@@ -146,7 +146,7 @@
 
                             </div>
                             <div class="col-md-10 text-div">
-                                <div onclick="showEmoji()" class="emoji">😁</div><textarea  id="msg" class="form-control1 send-text" rows="3" cols="20"></textarea>
+                                <div onclick="showEmoji()" class="emoji">😁</div><input type="text"  id="msg" class="form-control1 send-text" rows="3" cols="20">
                             </div>
                             <div class="col-md-2 btn-div">
                                 <button id="send" type="button" onclick="send()" class="btn btn-primary send-btn">发送
@@ -355,6 +355,10 @@
      * 展示
      */
     function showEmoji() {
+        if ($("#username").val() == '') {
+            alert("请输入昵称！");
+            return;
+        }
         if(isShow){
             $("#emoji").hide();
             isShow = false;
