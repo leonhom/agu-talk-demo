@@ -13,9 +13,13 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!--表情js -->
     <script src="/emoji/emoji-list-with-image.js"></script>
     <script src="/emoji/punycode.js"></script>
     <script src="/emoji/emoji.js"></script>
+
+    <!--浏览器通知js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
 
     <style>
         body {
@@ -174,6 +178,8 @@
     $(function () {
         userId = guid();
         renderEmoji();
+        //获取用户授权
+        Push.Permission.request();
     })
 
     function init() {
@@ -188,7 +194,7 @@
     }
 
     function initConnect() {
-        var wsUri = "ws://119.3.104.56:7777/ws";
+        var wsUri = "ws://127.0.0.1:7777/ws";
         if ('WebSocket' in window) {
             websocket = new WebSocket(wsUri);
         } else if ('MozWebSocket' in window) {
@@ -211,6 +217,8 @@
             } else {
                 // 别人发送的消息
                 $("#log-container").append("<div class='text-success' style='width: 100%;'>" + jsonObject.dateTime + " " + jsonObject.username + "<br/>" + jsonObject.msg + "</div><br>");
+                //发出通知
+                tz(jsonObject.username,jsonObject.msg);
             }
 
             // $("#log-container").append("<div class='bg-info'><label class='text-danger'>" + evt.data + "</label><div class='text-success'>" + evt.data + "</div></div><br>");
@@ -377,6 +385,21 @@
         websocket.send(str);
         showEmoji();
     }
+
+    function tz(name,msg){
+
+        // 开始调用 Push.create 方法， Hello world! 是通知的标题
+        Push.create(name, {
+            // body 选项是通知的内容
+            body: msg,
+            // icon 选项是通知的图片
+            icon: './icon.png',
+            // timeout 选项是通知停留时间
+            timeout: 4000
+        });
+    }
+
+
 </script>
 </body>
 </html>
